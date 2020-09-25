@@ -1,70 +1,68 @@
 import React, { useEffect, useState } from "react";
 import { Button, Row } from "antd";
 import { API_URL, API_KEY, IMAGE_BASE_URL } from "../../Config";
-import MainImage from "./Sections/MainImage";
+import MainImage from "../LandingPage/Sections/MainImage";
 import GridCards from "../commons/GridCards";
 
-function LandingPage() {
-  const [Movies, setMovies] = useState([]);
-  const [MainMovieImage, setMainMovieImage] = useState(null);
+function TvPage() {
+  const [Tv, setTv] = useState([]);
+  const [MainTvImage, setMainTVImage] = useState(null);
   const [CurrentPage, setCurrentPage] = useState(0);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-    const endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=ko-KR&page=1`;
-    fetchMovies(endpoint);
+    const endpoint = `${API_URL}tv/popular?api_key=${API_KEY}&language=ko-KR&page=1`;
+    fetchTvs(endpoint);
   }, []);
 
-  const fetchMovies = (endpoint) => {
+  const fetchTvs = (endpoint) => {
     fetch(endpoint)
       .then((response) => response.json())
       .then((response) => {
         console.log(response);
         console.log(response.results);
 
-        setMovies([...Movies, ...response.results]);
-        setMainMovieImage(MainMovieImage || response.results[0]);
+        setTv([...Tv, ...response.results]);
+        setMainTVImage(MainTvImage || response.results[0]);
         setCurrentPage(response.page);
         setLoading(false);
       });
   };
 
   const loadMoreItems = () => {
-    const endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=ko-KR&page=${
+    const endpoint = `${API_URL}tv/popular?api_key=${API_KEY}&language=ko-KR&page=${
       CurrentPage + 1
     }`;
-    fetchMovies(endpoint);
+    fetchTvs(endpoint);
     setLoading(true);
   };
 
   return (
     <div style={{ width: "100%", margin: "0" }}>
       {/* main Image */}
-      {MainMovieImage && (
+      {MainTvImage && (
         <MainImage
-          moiveImage
-          image={`${IMAGE_BASE_URL}w1280${MainMovieImage.backdrop_path}`}
-          title={MainMovieImage.original_title}
-          text={MainMovieImage.overview}
+          image={`${IMAGE_BASE_URL}w1280${MainTvImage.backdrop_path}`}
+          title={MainTvImage.original_title}
+          text={MainTvImage.overview}
         />
       )}
       <div style={{ width: "85%", margin: "1rem auto" }}>
-        <h2>최신 영화</h2>
+        <h2>인기 Tv</h2>
         <hr />
         {/* Movie grid card */}
         <Row gutter={[16, 16]}>
-          {Movies &&
-            Movies.map((movie, index) => (
+          {Tv &&
+            Tv.map((tv, index) => (
               <React.Fragment key={index}>
                 <GridCards
-                  landingPage
+                  TvPage
                   image={
-                    movie.poster_path
-                      ? `${IMAGE_BASE_URL}w500${movie.poster_path}`
+                    tv.poster_path
+                      ? `${IMAGE_BASE_URL}w400${tv.poster_path}`
                       : null
                   }
-                  movieId={movie.id}
-                  movieName={movie.title}
-                  movieAverge={movie.vote_average}
+                  tvId={tv.id}
+                  tvName={tv.name}
                 />
               </React.Fragment>
             ))}
@@ -78,4 +76,4 @@ function LandingPage() {
   );
 }
 
-export default LandingPage;
+export default TvPage;

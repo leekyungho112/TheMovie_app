@@ -13,10 +13,7 @@ function Footer() {
         fontSize: "1rem",
       }}
     >
-      <p>
-        {" "}
-        2020 <Icon type="smile" />
-      </p>
+      <p> 2020 Movie_app</p>
     </div>
   );
 }

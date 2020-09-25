@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { API_URL, API_KEY, IMAGE_BASE_URL } from "../../Config";
-import MainImage from "../LandingPage/Sections/MainImage";
-import MovieInfo from "./Sections/MovieInfo";
-import GridCards from "../commons/GridCards";
-import { Row, Button } from "antd";
-import Favorite from "./Sections/Favorite";
 
-function MovieDetail(props) {
+import { Row, Button } from "antd";
+import MainImage from "../LandingPage/Sections/MainImage";
+import GridCards from "../commons/GridCards";
+import TvInfo from "./Sections/TvInfo";
+import Tvfavirote from "../MovieDetail/Sections/Tvfavirote";
+
+function TvPageDetail(props) {
   //MovieId를 가져온다
-  let movieId = props.match.params.movieId;
-  const [Movie, setMovie] = useState([]);
+  let tvId = props.match.params.tvId;
+  const [Tv, setTv] = useState([]);
   const [Casts, setCasts] = useState([]);
   const [Loading, setLoading] = useState(false);
   const [ActorToggle, setActorToggle] = useState(false);
@@ -18,14 +19,14 @@ function MovieDetail(props) {
   useEffect(() => {
     console.log(props.match);
 
-    let endpointCast = `${API_URL}movie/${movieId}/credits?api_key=${API_KEY}`;
-    let endpointInfo = `${API_URL}movie/${movieId}?api_key=${API_KEY}&language=ko-KR`;
+    let endpointCast = `${API_URL}tv/${tvId}/credits?api_key=${API_KEY}`;
+    let endpointInfo = `${API_URL}tv/${tvId}?api_key=${API_KEY}&language=ko-KR`;
 
     fetch(endpointInfo)
       .then((response) => response.json())
       .then((response) => {
         console.log(response);
-        setMovie(response);
+        setTv(response);
       });
 
     fetch(endpointCast)
@@ -45,27 +46,25 @@ function MovieDetail(props) {
     <div>
       {/* header */}
       {/* backdrop_path값을 가져오는데 시간이 걸리는데 그전에 값을 불러 드릴려고 하면 Undefined   */}
-      {Movie.backdrop_path && (
+      {Tv.backdrop_path && (
         <MainImage
-          image={`${IMAGE_BASE_URL}w1280${Movie.backdrop_path}`}
-          title={Movie.original_title}
-          text={Movie.overview}
+          image={`${IMAGE_BASE_URL}w1280${Tv.backdrop_path}`}
+          title={Tv.name}
+          text={Tv.overview}
         />
       )}
 
       {/* body */}
       <div style={{ width: "85%", margin: "1rem auto" }}>
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
-          <Favorite
-            movieInfo={Movie}
-            movieId={movieId}
+          <Tvfavirote
+            tvInfo={Tv}
+            tvId={tvId}
             userFrom={localStorage.getItem("userId")}
           />
         </div>
-
         {/* Movie Info */}
-        <MovieInfo movie={Movie} />
-
+        <TvInfo tv={Tv} />
         <br />
         {/* Actor Grid */}
         <div
@@ -97,4 +96,4 @@ function MovieDetail(props) {
   );
 }
 
-export default MovieDetail;
+export default TvPageDetail;

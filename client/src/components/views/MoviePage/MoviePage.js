@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Button, Row } from "antd";
-import { API_URL, API_KEY, IMAGE_BASE_URL } from "../../Config";
-import MainImage from "./Sections/MainImage";
+import { API_KEY, API_URL, IMAGE_BASE_URL } from "../../Config";
+import MainImage from "../LandingPage/Sections/MainImage";
 import GridCards from "../commons/GridCards";
 
-function LandingPage() {
+function MoviePage() {
   const [Movies, setMovies] = useState([]);
   const [MainMovieImage, setMainMovieImage] = useState(null);
   const [CurrentPage, setCurrentPage] = useState(0);
@@ -78,4 +78,4 @@ function LandingPage() {
   );
 }
 
-export default LandingPage;
+export default MoviePage;
